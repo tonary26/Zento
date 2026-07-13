@@ -36,7 +36,7 @@ onMounted(async () => {
         <div class="hero__glow"></div>
         <p class="hero__eyebrow">Личный кабинет</p>
         <h1 class="hero__title">Привет!<br />Рады видеть вас снова.</h1>
-        <p class="hero__subtitle">Здесь — ваши цифровые товары, заказы и баланс. Всё в одном месте.</p>
+        <p class="hero__subtitle">Здесь - ваши цифровые товары, заказы и баланс. Всё в одном месте.</p>
         <div class="hero__actions">
           <button class="btn btn--primary" type="button">Каталог товаров</button>
           <button class="btn btn--ghost glass" type="button">Мои покупки</button>

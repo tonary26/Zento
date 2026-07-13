@@ -6,8 +6,12 @@ const router = createRouter({
     routes: [
         {
             path: '/',
-            component: () => import('@/components/dashboard/index.vue'),
+            component: () => import('@/view/Dashboard.vue'),
             name: 'dashboard.index'
+        },
+        {
+            path: '/products/add',
+            component: () => import('@/view/product/Add.vue')
         }
     ]
 })
