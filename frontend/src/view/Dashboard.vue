@@ -111,9 +111,11 @@ onMounted(async () => {
         </div>
         <div class="products-row">
           <div v-for="product in store.products" :key="product.id" class="glass product-card">
-            <div class="product-card__thumb glass"></div>
-            <span class="product-card__title">{{ product.name }}</span>
-            <span class="product-card__price">{{ product.price }}₽</span>
+            <router-link :to="{name: 'products.show', params: { id: product.id }}" class="product-card__link">
+              <div class="product-card__thumb glass"></div>
+              <span class="product-card__title">{{ product.name }}</span>
+              <span class="product-card__price">{{ product.price }}₽</span>
+            </router-link>
           </div>
         </div>
       </section>
@@ -196,7 +198,6 @@ onMounted(async () => {
   z-index: 1;
 }
 
-/* ==================== ФОНОВЫЕ ПЯТНА (для стекла) ==================== */
 .bg-orb {
   position: absolute;
   border-radius: 50%;
@@ -226,7 +227,6 @@ onMounted(async () => {
   background: rgba(255, 255, 255, 0.06);
 }
 
-/* ==================== ЖИДКОЕ СТЕКЛО (базовый класс) ==================== */
 .glass {
   background: rgba(255, 255, 255, 0.06);
   backdrop-filter: blur(20px) saturate(140%);
@@ -248,7 +248,6 @@ onMounted(async () => {
   pointer-events: none;
 }
 
-/* ==================== TOPBAR ==================== */
 .topbar {
   display: flex;
   align-items: center;
@@ -301,7 +300,6 @@ onMounted(async () => {
   flex-shrink: 0;
 }
 
-/* ==================== HERO ==================== */
 .hero {
   padding: 26px 20px;
   border-radius: 24px;
@@ -347,7 +345,6 @@ onMounted(async () => {
   position: relative;
 }
 
-/* ==================== BUTTONS ==================== */
 .btn {
   border: none;
   cursor: pointer;
@@ -371,7 +368,6 @@ onMounted(async () => {
   padding: 11px 20px;
 }
 
-/* ==================== STATS ==================== */
 .stats {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
@@ -400,12 +396,20 @@ onMounted(async () => {
   margin-top: 2px;
 }
 
-/* ==================== SECTIONS ==================== */
 .section {
   display: flex;
   flex-direction: column;
   gap: 12px;
 }
+
+.product-card__link {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  text-decoration: none;
+  color: inherit;
+}
+
 .section--last {
   padding-bottom: 4px;
 }
@@ -430,7 +434,6 @@ onMounted(async () => {
   font-family: inherit;
 }
 
-/* ==================== QUICK ACTIONS ==================== */
 .quick-grid {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
@@ -461,7 +464,6 @@ onMounted(async () => {
   color: rgba(255, 255, 255, 0.75);
 }
 
-/* ==================== PRODUCTS ROW ==================== */
 .products-row {
   display: flex;
   gap: 12px;
@@ -498,7 +500,6 @@ onMounted(async () => {
   color: #fff;
 }
 
-/* ==================== ACTIVITY ==================== */
 .activity-card {
   padding: 18px;
   border-radius: 18px;
@@ -530,7 +531,6 @@ onMounted(async () => {
   color: rgba(255, 255, 255, 0.45);
 }
 
-/* ==================== BOTTOM NAV ==================== */
 .bottom-nav {
   position: absolute;
   left: 12px;
@@ -567,7 +567,6 @@ onMounted(async () => {
   background: rgba(255, 255, 255, 0.1);
 }
 
-/* ==================== АДАПТИВ ==================== */
 @media (max-width: 380px) {
   .dashboard__scroll {
     padding-left: 12px;
@@ -599,7 +598,6 @@ onMounted(async () => {
   }
 }
 
-/* Более широкие экраны (десктоп-превью телеграм веб) */
 @media (min-width: 768px) {
   .dashboard {
     align-items: center;

@@ -13,7 +13,7 @@ export const useProductStore = defineStore('product', {
     actions: {
         async getProducts() {
             try {
-                const data = await api.get('/api/v1/products')
+                const data = await api.get('/products')
                 this.products = data.data.products
             }
             catch(error) {
@@ -23,16 +23,16 @@ export const useProductStore = defineStore('product', {
 
         async addProduct(formData) {
             try {
-                await api.post('/api/v1/products', formData);
+                await api.post('/products', formData);
             }
             catch(error) {
                 console.log(error)
             }
         },
 
-        async show(product_id) {
+        async showProduct(id) {
             try {
-                const data = await api.get(`/products/${product_id}`)
+                const data = await api.get(`/products/${id}`)
                 this.product = data.data.product
             }
             catch(error) {
