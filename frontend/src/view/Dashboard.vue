@@ -64,7 +64,7 @@ onMounted(async () => {
           <h2 class="section__title">Быстрые действия</h2>
         </div>
         <div class="quick-grid">
-          <button class="glass quick-card" type="button">
+          <router-link :to="{ name: 'products.index' }" class="glass quick-card" type="button">
             <span class="quick-card__icon glass">
               <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
                 <path d="M4 7H20" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/>
@@ -73,7 +73,7 @@ onMounted(async () => {
               </svg>
             </span>
             <span class="quick-card__text">Каталог</span>
-          </button>
+          </router-link>
           <button class="glass quick-card" type="button">
             <span class="quick-card__icon glass">
               <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
@@ -107,7 +107,7 @@ onMounted(async () => {
       <section class="section">
         <div class="section__head">
           <h2 class="section__title">Рекомендуем</h2>
-          <button class="section__more" type="button">Все товары →</button>
+          <router-link :to="{ name: 'products.index' }" class="section__more" type="button">Все товары →</router-link>
         </div>
         <div class="products-row">
           <div v-for="product in store.products" :key="product.id" class="glass product-card">
@@ -137,38 +137,6 @@ onMounted(async () => {
         </div>
       </section>
     </div>
-    <nav class="glass bottom-nav">
-      <button class="bottom-nav__item bottom-nav__item--active" type="button">
-        <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
-          <path d="M3 12L12 4L21 12" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/>
-          <path d="M6 11V20H18V11" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"/>
-        </svg>
-        <span>Главная</span>
-      </button>
-      <button class="bottom-nav__item" type="button">
-        <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
-          <path d="M4 7H20" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/>
-          <path d="M6 7L7 19H17L18 7" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"/>
-          <path d="M9 4H15" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/>
-        </svg>
-        <span>Каталог</span>
-      </button>
-      <button class="bottom-nav__item" type="button">
-        <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
-          <path d="M4 4H8L9 16H19L20 8H8.5" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"/>
-          <circle cx="10" cy="20" r="1.4" stroke="currentColor" stroke-width="1.4"/>
-          <circle cx="17" cy="20" r="1.4" stroke="currentColor" stroke-width="1.4"/>
-        </svg>
-        <span>Заказы</span>
-      </button>
-      <button class="bottom-nav__item" type="button">
-        <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
-          <circle cx="12" cy="8" r="3.4" stroke="currentColor" stroke-width="1.7"/>
-          <path d="M5 20C5 16.5 8 14 12 14C16 14 19 16.5 19 20" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/>
-        </svg>
-        <span>Профиль</span>
-      </button>
-    </nav>
   </div>
 </template>
 
@@ -432,6 +400,7 @@ onMounted(async () => {
   font-weight: 600;
   cursor: pointer;
   font-family: inherit;
+  text-decoration: none;
 }
 
 .quick-grid {
@@ -440,6 +409,7 @@ onMounted(async () => {
   gap: 10px;
 }
 .quick-card {
+  text-decoration: none;
   padding: 14px 6px;
   border-radius: 18px;
   display: flex;
@@ -460,6 +430,7 @@ onMounted(async () => {
 }
 .quick-card__text {
   font-size: 11px;
+  text-decoration: none;
   font-weight: 500;
   color: rgba(255, 255, 255, 0.75);
 }
@@ -531,42 +502,6 @@ onMounted(async () => {
   color: rgba(255, 255, 255, 0.45);
 }
 
-.bottom-nav {
-  position: absolute;
-  left: 12px;
-  right: 12px;
-  bottom: calc(12px + env(safe-area-inset-bottom));
-  border-radius: 20px;
-  display: flex;
-  align-items: center;
-  justify-content: space-around;
-  padding: 8px;
-  z-index: 2;
-}
-.bottom-nav__item {
-  background: none;
-  border: none;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 4px;
-  padding: 8px 10px;
-  border-radius: 14px;
-  color: rgba(255, 255, 255, 0.4);
-  cursor: pointer;
-  font-family: inherit;
-  transition: color 0.15s ease, background 0.15s ease;
-  flex: 1;
-}
-.bottom-nav__item span {
-  font-size: 10.5px;
-  font-weight: 600;
-}
-.bottom-nav__item--active {
-  color: #fff;
-  background: rgba(255, 255, 255, 0.1);
-}
-
 @media (max-width: 380px) {
   .dashboard__scroll {
     padding-left: 12px;
@@ -589,12 +524,6 @@ onMounted(async () => {
     max-width: 480px;
     margin: 0 auto;
     width: 100%;
-  }
-  .bottom-nav {
-    max-width: 456px;
-    margin: 0 auto;
-    left: 0;
-    right: 0;
   }
 }
 

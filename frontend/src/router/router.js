@@ -10,6 +10,11 @@ const router = createRouter({
             name: 'dashboard.index'
         },
         {
+            path: '/products',
+            component: () => import('@/view/product/Index.vue'),
+            name: 'products.index'
+        },
+        {
             path: '/products/add',
             component: () => import('@/view/product/Add.vue'),
             name: 'products.add'
@@ -18,7 +23,7 @@ const router = createRouter({
             path: '/products/:id',
             component: () => import('@/view/product/Show.vue'),
             name: 'products.show'
-        }
+        },
     ]
 })
 

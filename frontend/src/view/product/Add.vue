@@ -1,6 +1,7 @@
 <script setup>
 import { useProductStore } from "@/stores/product.js"
 import { reactive } from "vue"
+import { useRouter } from "vue-router"
 
 const productStore = useProductStore()
 const formData = reactive({
@@ -8,6 +9,8 @@ const formData = reactive({
   description: '',
   price: ''
 })
+
+const router = useRouter()
 
 const addProduct = async function() {
   await productStore.addProduct(formData)
@@ -19,11 +22,7 @@ const addProduct = async function() {
 }
 
 function goBack() {
-  // сюда - переход назад/на каталог
-}
-
-function handleSubmit() {
-  // сюда - отправка данных формы
+   router.back()
 }
 </script>
 
