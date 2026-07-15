@@ -88,10 +88,8 @@ onMounted(async () => {
   position: relative;
   min-height: 100vh;
   min-height: 100dvh;
-  background: #050505;
   color: #f5f5f5;
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
-  overflow: hidden;
   display: flex;
   flex-direction: column;
 }
@@ -240,9 +238,6 @@ onMounted(async () => {
   display: flex;
   flex-direction: column;
   gap: 12px;
-}
-.section--last {
-  padding-bottom: 4px;
 }
 .section__head {
   display: flex;

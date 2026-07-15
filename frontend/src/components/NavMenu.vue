@@ -26,13 +26,13 @@
       </svg>
       <span>Заказы</span>
     </button>
-    <button class="bottom-nav__item" type="button">
+    <router-link :to="{ name: 'user.profile' }" class="bottom-nav__item" type="button">
       <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
         <circle cx="12" cy="8" r="3.4" stroke="currentColor" stroke-width="1.7"/>
         <path d="M5 20C5 16.5 8 14 12 14C16 14 19 16.5 19 20" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/>
       </svg>
       <span>Профиль</span>
-    </button>
+    </router-link>
   </nav>
 </template>
 

@@ -10,5 +10,9 @@ Route::get('/user', function (Request $request) {
 Route::prefix('/v1')->group(function () {
     Route::prefix('/products')->name('products.')->group(function () {
         require __DIR__ . '/api/product.php';
+    })->middleware('auth:sanctum');
+
+    Route::prefix('/telegram-auth')->name('telegram-auth.')->group(function () {
+        require __DIR__ . '/api/telegramAuth.php';
     });
 });
