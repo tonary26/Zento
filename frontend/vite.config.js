@@ -15,10 +15,11 @@ export default defineConfig({
         },
     },
     server: {
+        host: '0.0.0.0',
         allowedHosts: true,
         proxy: {
             '/api': {
-                target: 'http://localhost:8081',
+                target: process.env.VITE_API_PROXY_TARGET || 'http://localhost:8081',
                 changeOrigin: true,
             },
         },

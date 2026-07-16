@@ -63,7 +63,7 @@ class TelegramAuthController extends Controller
             ->map(fn ($value, $key) => "{$key}={$value}")
             ->implode("\n");
 
-        $secretKey = hash_hmac('sha256', 'WebAppData', config('services.telegram.bot_token'), true);
+        $secretKey = hash_hmac('sha256', config('services.telegram.bot_token'), 'WebAppData', true);
         $computedHash = hash_hmac('sha256', $dataCheckString, $secretKey);
 
         return hash_equals($computedHash, $hash);
