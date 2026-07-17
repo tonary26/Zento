@@ -43,7 +43,7 @@ onMounted(async () => {
       </header>
 
       <section class="glass gallery">
-        <div class="gallery__thumb"></div>
+        <img :src="productStore.product.image" class="gallery__image" alt="">
       </section>
 
       <section class="glass product-info">
@@ -200,6 +200,15 @@ onMounted(async () => {
   padding: 12px;
   border-radius: 24px;
 }
+.gallery__image {
+  width: 100%;
+  aspect-ratio: 1 / 1;
+  border-radius: 18px;
+  background: rgba(255, 255, 255, 0.08);
+  object-fit: cover;
+  display: block;
+}
+
 .gallery__thumb {
   width: 100%;
   aspect-ratio: 1 / 1;

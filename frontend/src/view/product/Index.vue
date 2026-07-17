@@ -1,9 +1,12 @@
 <script setup>
 import { useProductStore } from "@/stores/product.js"
+import { useAuthStore } from "@/stores/auth.js"
 import { onMounted } from "vue"
 import { useRouter } from "vue-router"
 
 const productStore = useProductStore()
+const authStore = useAuthStore()
+
 const router = useRouter()
 
 function goBack() {
@@ -32,12 +35,14 @@ onMounted(async () => {
           <span class="topbar__hello">Товары</span>
           <span class="topbar__name">Каталог</span>
         </div>
-        <router-link :to="{ name: 'products.add' }" class="topbar__icon-btn glass" type="button" aria-label="Добавить товар">
+        <router-link v-if="authStore.isAdmin" :to="{ name: 'products.add' }" class="topbar__icon-btn glass" type="button" aria-label="Добавить товар">
           <svg width="18" height="18" viewBox="0 0 24 24" fill="none">
             <path d="M12 5V19" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
             <path d="M5 12H19" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
           </svg>
         </router-link>
+
+        <div v-else class="topbar__placeholder"></div>
       </header>
 
       <section class="glass search-bar">
@@ -57,7 +62,7 @@ onMounted(async () => {
         <div class="products-grid">
           <div v-for="product in productStore.products" :key="product.id" class="glass product-card">
             <router-link :to="{ name: 'products.show', params: { id: product.id } }" class="product-card__link">
-              <div class="product-card__thumb glass"></div>
+              <img :src="product.image" class="product-card__thumb glass">
               <span class="product-card__title">{{ product.name }}</span>
               <span class="product-card__price">{{ product.price }}₽</span>
             </router-link>
@@ -181,6 +186,12 @@ onMounted(async () => {
   color: #fff;
   flex-shrink: 0;
   cursor: pointer;
+  text-decoration: none;
+}
+
+.topbar__placeholder {
+  width: 38px;
+  height: 38px;
   text-decoration: none;
 }
 

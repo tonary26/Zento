@@ -5,6 +5,7 @@ import { useRouter } from "vue-router"
 
 const productStore = useProductStore()
 const formData = reactive({
+  image: '',
   name: '',
   description: '',
   price: ''
@@ -15,6 +16,7 @@ const router = useRouter()
 const addProduct = async function() {
   await productStore.addProduct(formData)
   Object.assign(formData, {
+    image: '',
     name: '',
     description: '',
     price: ''
@@ -49,11 +51,20 @@ function goBack() {
         <div class="hero__glow"></div>
         <p class="hero__eyebrow">Добавление товара</p>
         <h1 class="hero__title">Заполните<br />карточку товара</h1>
-        <p class="hero__subtitle">Название и цена обязательны, описание можно добавить позже.</p>
+        <p class="hero__subtitle">Название, изображение и цена обязательны, описание можно добавить позже.</p>
       </section>
 
       <section class="section">
-        <form class="glass form-card" @submit.prevent="handleSubmit">
+        <form class="glass form-card">
+          <label class="field">
+            <span class="field__label">Изображение товара</span>
+            <input
+                v-model="formData.image"
+                type="text"
+                class="field__input"
+                placeholder="Вставьте ссылку на изображение"
+            />
+          </label>
           <label class="field">
             <span class="field__label">Название товара</span>
             <input
@@ -61,7 +72,6 @@ function goBack() {
                 type="text"
                 class="field__input"
                 placeholder="Например, Подарочная карта"
-                maxlength="120"
             />
           </label>
 
@@ -74,7 +84,6 @@ function goBack() {
                 v-model="formData.description"
                 class="field__textarea"
                 rows="4"
-                maxlength="500"
                 placeholder="Кратко расскажите о товаре"
             ></textarea>
           </label>

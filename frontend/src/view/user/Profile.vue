@@ -87,27 +87,6 @@ const authStore = useAuthStore()
           </button>
         </div>
       </section>
-      <section class="section">
-        <div class="section__head">
-          <h2 class="section__title">Настройки</h2>
-        </div>
-        <div class="glass menu-list">
-          <div class="menu-list__divider"></div>
-          <button class="menu-item" type="button">
-            <span class="menu-item__icon glass">
-              <svg width="18" height="18" viewBox="0 0 24 24" fill="none">
-                <path d="M12 7V12L15 14" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
-                <circle cx="12" cy="12" r="8.5" stroke="currentColor" stroke-width="1.6"/>
-              </svg>
-            </span>
-            <span class="menu-item__text">История активности</span>
-            <svg class="menu-item__chevron" width="16" height="16" viewBox="0 0 24 24" fill="none">
-              <path d="M9 5L16 12L9 19" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
-            </svg>
-          </button>
-          <div class="menu-list__divider"></div>
-        </div>
-      </section>
     </div>
   </div>
 </template>

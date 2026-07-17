@@ -1,11 +1,13 @@
 <script setup>
 import { useProductStore } from "@/stores/product.js"
+import { useAuthStore } from "@/stores/auth.js"
 import { onMounted } from "vue"
 
-const store = useProductStore()
+const productStore = useProductStore()
+const authStore = useAuthStore()
 
 onMounted(async () => {
-  await store.getProducts()
+  await productStore.getProducts()
 })
 
 </script>
@@ -34,11 +36,10 @@ onMounted(async () => {
       </header>
       <section class="glass hero">
         <div class="hero__glow"></div>
-        <p class="hero__eyebrow">Личный кабинет</p>
         <h1 class="hero__title">Привет!<br />Рады видеть вас снова.</h1>
         <p class="hero__subtitle">Здесь - ваши цифровые товары, заказы и баланс. Всё в одном месте.</p>
         <div class="hero__actions">
-          <button class="btn btn--primary" type="button">Каталог товаров</button>
+          <router-link :to="{ name: 'products.index' }" class="btn btn--primary" type="button">Каталог товаров</router-link>
           <button class="btn btn--ghost glass" type="button">Мои покупки</button>
         </div>
       </section>
@@ -93,7 +94,7 @@ onMounted(async () => {
             </span>
             <span class="quick-card__text">Главная</span>
           </button>
-          <button class="glass quick-card" type="button">
+          <router-link :to="{ name: 'user.profile', params: { id: authStore.user.id } }" class="glass quick-card" type="button">
             <span class="quick-card__icon glass">
               <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
                 <circle cx="12" cy="8" r="3.4" stroke="currentColor" stroke-width="1.6"/>
@@ -101,7 +102,7 @@ onMounted(async () => {
               </svg>
             </span>
             <span class="quick-card__text">Профиль</span>
-          </button>
+          </router-link>
         </div>
       </section>
       <section class="section">
@@ -110,29 +111,12 @@ onMounted(async () => {
           <router-link :to="{ name: 'products.index' }" class="section__more" type="button">Все товары →</router-link>
         </div>
         <div class="products-row">
-          <div v-for="product in store.products" :key="product.id" class="glass product-card">
+          <div v-for="product in productStore.products" :key="product.id" class="glass product-card">
             <router-link :to="{name: 'products.show', params: { id: product.id }}" class="product-card__link">
-              <div class="product-card__thumb glass"></div>
+              <img :src="product.image" class="product-card__thumb glass">
               <span class="product-card__title">{{ product.name }}</span>
               <span class="product-card__price">{{ product.price }}₽</span>
             </router-link>
-          </div>
-        </div>
-      </section>
-      <section class="section section--last">
-        <div class="section__head">
-          <h2 class="section__title">Последняя активность</h2>
-        </div>
-        <div class="glass activity-card">
-          <div class="activity-card__icon glass">
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="none">
-              <path d="M12 7V12L15 14" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
-              <circle cx="12" cy="12" r="8.5" stroke="currentColor" stroke-width="1.6"/>
-            </svg>
-          </div>
-          <div class="activity-card__body">
-            <span class="activity-card__title">Пока нет активности</span>
-            <span class="activity-card__desc">Ваши действия появятся здесь</span>
           </div>
         </div>
       </section>
@@ -273,6 +257,7 @@ onMounted(async () => {
   border-radius: 24px;
   overflow: hidden;
 }
+
 .hero__glow {
   position: absolute;
   top: -40%;
@@ -282,14 +267,7 @@ onMounted(async () => {
   background: radial-gradient(circle, rgba(255, 255, 255, 0.18) 0%, rgba(255, 255, 255, 0) 70%);
   pointer-events: none;
 }
-.hero__eyebrow {
-  font-size: 11px;
-  text-transform: uppercase;
-  letter-spacing: 0.1em;
-  color: rgba(255, 255, 255, 0.55);
-  margin: 0 0 10px;
-  position: relative;
-}
+
 .hero__title {
   font-size: 26px;
   font-weight: 700;
@@ -298,6 +276,7 @@ onMounted(async () => {
   letter-spacing: -0.01em;
   position: relative;
 }
+
 .hero__subtitle {
   font-size: 14px;
   color: rgba(255, 255, 255, 0.62);
@@ -306,6 +285,7 @@ onMounted(async () => {
   max-width: 34ch;
   position: relative;
 }
+
 .hero__actions {
   display: flex;
   gap: 10px;
@@ -320,17 +300,21 @@ onMounted(async () => {
   font-weight: 600;
   padding: 12px 20px;
   border-radius: 14px;
+  text-decoration: none;
   transition: transform 0.15s ease, opacity 0.15s ease;
   font-family: inherit;
 }
+
 .btn:active {
   transform: scale(0.96);
 }
+
 .btn--primary {
   background: #fff;
   color: #050505;
   box-shadow: 0 6px 18px rgba(255, 255, 255, 0.18);
 }
+
 .btn--ghost {
   color: #fff;
   padding: 11px 20px;
@@ -341,6 +325,7 @@ onMounted(async () => {
   grid-template-columns: repeat(3, 1fr);
   gap: 10px;
 }
+
 .stat-card {
   padding: 16px 14px;
   border-radius: 18px;
@@ -348,16 +333,19 @@ onMounted(async () => {
   flex-direction: column;
   gap: 6px;
 }
+
 .stat-card__label {
   font-size: 11px;
   color: rgba(255, 255, 255, 0.5);
   text-transform: uppercase;
   letter-spacing: 0.04em;
 }
+
 .stat-card__value {
   font-size: 18px;
   font-weight: 700;
 }
+
 .stat-card__hint {
   font-size: 11px;
   color: rgba(255, 255, 255, 0.4);
@@ -378,9 +366,6 @@ onMounted(async () => {
   color: inherit;
 }
 
-.section--last {
-  padding-bottom: 4px;
-}
 .section__head {
   display: flex;
   align-items: center;
@@ -408,6 +393,7 @@ onMounted(async () => {
   grid-template-columns: repeat(4, 1fr);
   gap: 10px;
 }
+
 .quick-card {
   text-decoration: none;
   padding: 14px 6px;
@@ -420,6 +406,7 @@ onMounted(async () => {
   color: #fff;
   font-family: inherit;
 }
+
 .quick-card__icon {
   width: 42px;
   height: 42px;
@@ -428,6 +415,7 @@ onMounted(async () => {
   align-items: center;
   justify-content: center;
 }
+
 .quick-card__text {
   font-size: 11px;
   text-decoration: none;
@@ -442,9 +430,11 @@ onMounted(async () => {
   padding-bottom: 4px;
   scroll-snap-type: x mandatory;
 }
+
 .products-row::-webkit-scrollbar {
   display: none;
 }
+
 .product-card {
   flex: 0 0 132px;
   padding: 12px;
@@ -454,52 +444,24 @@ onMounted(async () => {
   gap: 8px;
   scroll-snap-align: start;
 }
+
 .product-card__thumb {
   width: 100%;
   aspect-ratio: 1 / 1;
   border-radius: 14px;
   background: rgba(255, 255, 255, 0.08);
 }
+
 .product-card__title {
   font-size: 12.5px;
   font-weight: 600;
   color: rgba(255, 255, 255, 0.85);
 }
+
 .product-card__price {
   font-size: 13px;
   font-weight: 700;
   color: #fff;
-}
-
-.activity-card {
-  padding: 18px;
-  border-radius: 18px;
-  display: flex;
-  align-items: center;
-  gap: 14px;
-}
-.activity-card__icon {
-  width: 40px;
-  height: 40px;
-  border-radius: 12px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  flex-shrink: 0;
-  color: rgba(255, 255, 255, 0.7);
-}
-.activity-card__body {
-  display: flex;
-  flex-direction: column;
-  gap: 2px;
-}
-.activity-card__title {
-  font-size: 13.5px;
-  font-weight: 600;
-}
-.activity-card__desc {
-  font-size: 12px;
-  color: rgba(255, 255, 255, 0.45);
 }
 
 @media (max-width: 380px) {
