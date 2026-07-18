@@ -47,15 +47,8 @@ function goBack() {
         </div>
       </header>
 
-      <section class="glass hero hero--form">
-        <div class="hero__glow"></div>
-        <p class="hero__eyebrow">Добавление товара</p>
-        <h1 class="hero__title">Заполните<br />карточку товара</h1>
-        <p class="hero__subtitle">Название, изображение и цена обязательны, описание можно добавить позже.</p>
-      </section>
-
       <section class="section">
-        <form class="glass form-card">
+        <form class="glass form-card" @submit.prevent="addProduct">
           <label class="field">
             <span class="field__label">Изображение товара</span>
             <input
@@ -98,16 +91,16 @@ function goBack() {
                 placeholder="0"
             />
           </label>
-
-          <div class="form-card__actions">
-            <button @click="addProduct" class="btn btn--primary" type="submit">
-              Добавить товар
-            </button>
-            <button class="btn btn--ghost glass" type="button" @click="goBack">
-              Отмена
-            </button>
-          </div>
         </form>
+
+        <div class="glass action-bar">
+          <button class="btn btn--ghost glass action-bar__cancel" type="button" @click="goBack">
+            Отмена
+          </button>
+          <button class="btn btn--primary action-bar__submit" type="button" @click="addProduct">
+            Добавить товар
+          </button>
+        </div>
       </section>
     </div>
   </div>
@@ -117,7 +110,6 @@ function goBack() {
 .dashboard {
   position: relative;
   min-height: 100vh;
-  min-height: 100dvh;
   background: #050505;
   color: #f5f5f5;
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
@@ -130,13 +122,39 @@ function goBack() {
   flex: 1;
   overflow-y: auto;
   -webkit-overflow-scrolling: touch;
-  padding: calc(12px + env(safe-area-inset-top)) 16px 24px;
-  padding-bottom: calc(24px + env(safe-area-inset-bottom));
   display: flex;
   flex-direction: column;
   gap: 20px;
   position: relative;
   z-index: 1;
+}
+
+.action-bar {
+  position: fixed;
+  left: 12px;
+  right: 12px;
+  border-radius: 20px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px;
+  z-index: 999;
+  max-width: calc(100vw - 24px);
+}
+
+.action-bar__cancel {
+  flex: 0 0 auto;
+  padding: 12px 14px;
+  white-space: nowrap;
+}
+
+.action-bar__submit {
+  flex: 1;
+  min-width: 0;
+  padding: 12px 14px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .bg-orb {
@@ -180,6 +198,7 @@ function goBack() {
   border-radius: 20px;
   position: relative;
 }
+
 .glass::before {
   content: '';
   position: absolute;
@@ -227,48 +246,6 @@ function goBack() {
   cursor: pointer;
 }
 
-.hero {
-  padding: 26px 20px;
-  border-radius: 24px;
-  overflow: hidden;
-}
-.hero--form {
-  padding-bottom: 22px;
-}
-.hero__glow {
-  position: absolute;
-  top: -40%;
-  right: -20%;
-  width: 220px;
-  height: 220px;
-  background: radial-gradient(circle, rgba(255, 255, 255, 0.18) 0%, rgba(255, 255, 255, 0) 70%);
-  pointer-events: none;
-}
-.hero__eyebrow {
-  font-size: 11px;
-  text-transform: uppercase;
-  letter-spacing: 0.1em;
-  color: rgba(255, 255, 255, 0.55);
-  margin: 0 0 10px;
-  position: relative;
-}
-.hero__title {
-  font-size: 26px;
-  font-weight: 700;
-  line-height: 1.22;
-  margin: 0 0 10px;
-  letter-spacing: -0.01em;
-  position: relative;
-}
-.hero__subtitle {
-  font-size: 14px;
-  color: rgba(255, 255, 255, 0.62);
-  line-height: 1.5;
-  margin: 0;
-  max-width: 34ch;
-  position: relative;
-}
-
 .btn {
   border: none;
   cursor: pointer;
@@ -279,19 +256,24 @@ function goBack() {
   transition: transform 0.15s ease, opacity 0.15s ease;
   font-family: inherit;
 }
+
 .btn:active {
   transform: scale(0.96);
 }
+
+
 .btn:disabled {
   opacity: 0.5;
   cursor: not-allowed;
 }
+
 .btn--primary {
   background: #fff;
   color: #050505;
   box-shadow: 0 6px 18px rgba(255, 255, 255, 0.18);
   flex: 1;
 }
+
 .btn--ghost {
   color: #fff;
   padding: 11px 20px;
@@ -316,6 +298,7 @@ function goBack() {
   flex-direction: column;
   gap: 8px;
 }
+
 .field__label {
   font-size: 12px;
   font-weight: 600;
@@ -326,6 +309,7 @@ function goBack() {
   align-items: baseline;
   gap: 8px;
 }
+
 .field__optional {
   font-size: 10.5px;
   font-weight: 500;
@@ -347,24 +331,30 @@ function goBack() {
   outline: none;
   transition: border-color 0.15s ease, background 0.15s ease;
 }
+
 .field__input::placeholder,
 .field__textarea::placeholder {
   color: rgba(255, 255, 255, 0.32);
 }
+
 .field__input:focus,
 .field__textarea:focus {
   border-color: rgba(255, 255, 255, 0.4);
   background: rgba(255, 255, 255, 0.09);
 }
+
 .field__textarea {
   resize: none;
   line-height: 1.5;
 }
 
-.form-card__actions {
-  display: flex;
-  gap: 10px;
-  margin-top: 4px;
+@media (min-width: 480px) {
+  .action-bar {
+    max-width: 456px;
+    margin: 0 auto;
+    left: 0;
+    right: 0;
+  }
 }
 
 @media (max-width: 380px) {
