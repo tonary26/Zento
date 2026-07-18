@@ -13,14 +13,21 @@ const formData = reactive({
 
 const router = useRouter()
 
+const onEnter = function () {
+  window.Telegram.WebApp.hideKeyboard()
+}
+
 const addProduct = async function() {
-  await productStore.addProduct(formData)
-  Object.assign(formData, {
-    image: '',
-    name: '',
-    description: '',
-    price: ''
-  })
+  try {
+    await productStore.addProduct(formData)
+    Object.assign(formData, {
+      image: '',
+      name: '',
+      description: '',
+      price: ''
+    })
+  } catch (error) {
+  }
 }
 
 function goBack() {
@@ -49,6 +56,10 @@ function goBack() {
 
       <section class="section">
         <form class="glass form-card" @submit.prevent="addProduct">
+          <p v-if="productStore.error" class="state-message state-message--error">
+            {{ productStore.error }}
+          </p>
+
           <label class="field">
             <span class="field__label">Изображение товара</span>
             <input
@@ -88,7 +99,8 @@ function goBack() {
                 type="number"
                 min="0"
                 class="field__input"
-                placeholder="0"
+                placeholder="1"
+                @keyup.enter="onEnter"
             />
           </label>
         </form>
@@ -97,8 +109,13 @@ function goBack() {
           <button class="btn btn--ghost glass action-bar__cancel" type="button" @click="goBack">
             Отмена
           </button>
-          <button class="btn btn--primary action-bar__submit" type="button" @click="addProduct">
-            Добавить товар
+          <button
+              class="btn btn--primary action-bar__submit"
+              type="button"
+              :disabled="productStore.loading"
+              @click="addProduct"
+          >
+            {{ productStore.loading ? 'Добавляю товар...' : 'Добавить товар' }}
           </button>
         </div>
       </section>
@@ -291,6 +308,21 @@ function goBack() {
   display: flex;
   flex-direction: column;
   gap: 18px;
+}
+
+.state-message {
+  margin: 0;
+  padding: 12px 14px;
+  border-radius: 14px;
+  font-size: 13px;
+  font-weight: 600;
+  line-height: 1.4;
+}
+
+.state-message--error {
+  background: rgba(120, 24, 24, 0.24);
+  color: #ffd6d6;
+  border: 1px solid rgba(255, 95, 95, 0.3);
 }
 
 .field {

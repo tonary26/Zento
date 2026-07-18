@@ -42,36 +42,45 @@ onMounted(async () => {
         </button>
       </header>
 
-      <section class="glass gallery">
-        <img :src="productStore.product.image" class="gallery__image" alt="">
-      </section>
+      <p v-if="productStore.loading" class="glass state-message">
+        Загружаю данные о товаре...
+      </p>
+      <p v-else-if="productStore.error" class="glass state-message state-message--error">
+        {{ productStore.error }}
+      </p>
 
-      <section class="glass product-info">
-        <div class="product-info__top">
-          <h1 class="product-info__title">{{ productStore.product.name }}</h1>
-          <span class="product-info__price">{{ productStore.product.price }} ₽</span>
-        </div>
-      </section>
+      <template v-else-if="productStore.product">
+        <section class="glass gallery">
+          <img :src="productStore.product.image" class="gallery__image" alt="">
+        </section>
 
-      <section v-if="productStore.product.description"
-          class="section">
-        <div class="section__head">
-          <h2 class="section__title">Описание</h2>
-        </div>
-        <div class="glass description-card">
-          <p class="description-card__text">
-            {{ productStore.product.description }}
-          </p>
-        </div>
-      </section>
-      <section v-else class="section">
-        <div class="section__head">
-          <h2 class="section__title">Описание отсутствует</h2>
-        </div>
-      </section>
+        <section class="glass product-info">
+          <div class="product-info__top">
+            <h1 class="product-info__title">{{ productStore.product.name }}</h1>
+            <span class="product-info__price">{{ productStore.product.price }} ₽</span>
+          </div>
+        </section>
+
+        <section v-if="productStore.product.description"
+            class="section">
+          <div class="section__head">
+            <h2 class="section__title">Описание</h2>
+          </div>
+          <div class="glass description-card">
+            <p class="description-card__text">
+              {{ productStore.product.description }}
+            </p>
+          </div>
+        </section>
+        <section v-else class="section">
+          <div class="section__head">
+            <h2 class="section__title">Описание отсутствует</h2>
+          </div>
+        </section>
+      </template>
     </div>
 
-    <div class="glass buy-bar">
+    <div v-if="productStore.product && !productStore.loading && !productStore.error" class="glass buy-bar">
       <div class="buy-bar__price">
         <span class="buy-bar__price-label">Цена</span>
         <span class="buy-bar__price-value">{{ productStore.product.price }}₽</span>
@@ -92,6 +101,7 @@ onMounted(async () => {
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
   display: flex;
   flex-direction: column;
+  overflow: hidden;
 }
 
 .dashboard__scroll {
@@ -99,7 +109,7 @@ onMounted(async () => {
   overflow-y: auto;
   -webkit-overflow-scrolling: touch;
   padding: calc(12px + env(safe-area-inset-top)) 16px 24px;
-  padding-bottom: calc(96px + env(safe-area-inset-bottom));
+  padding-bottom: calc(160px + env(safe-area-inset-bottom));
   display: flex;
   flex-direction: column;
   gap: 20px;
@@ -209,13 +219,6 @@ onMounted(async () => {
   display: block;
 }
 
-.gallery__thumb {
-  width: 100%;
-  aspect-ratio: 1 / 1;
-  border-radius: 18px;
-  background: rgba(255, 255, 255, 0.08);
-}
-
 .product-info {
   padding: 20px;
   border-radius: 22px;
@@ -223,12 +226,14 @@ onMounted(async () => {
   flex-direction: column;
   gap: 14px;
 }
+
 .product-info__top {
   display: flex;
   align-items: flex-start;
   justify-content: space-between;
   gap: 12px;
 }
+
 .product-info__title {
   font-size: 20px;
   font-weight: 700;
@@ -237,10 +242,27 @@ onMounted(async () => {
   letter-spacing: -0.01em;
   flex: 1;
 }
+
 .product-info__price {
   font-size: 20px;
   font-weight: 700;
   white-space: nowrap;
+}
+
+.state-message {
+  margin: 0;
+  padding: 16px;
+  border-radius: 18px;
+  color: rgba(255, 255, 255, 0.72);
+  font-size: 13px;
+  font-weight: 600;
+  line-height: 1.4;
+}
+
+.state-message--error {
+  background: rgba(120, 24, 24, 0.24);
+  color: #ffd6d6;
+  border-color: rgba(255, 95, 95, 0.3);
 }
 
 .section {
@@ -248,11 +270,13 @@ onMounted(async () => {
   flex-direction: column;
   gap: 12px;
 }
+
 .section__head {
   display: flex;
   align-items: center;
   justify-content: space-between;
 }
+
 .section__title {
   font-size: 16px;
   font-weight: 700;
@@ -263,19 +287,25 @@ onMounted(async () => {
 .description-card {
   padding: 18px;
   border-radius: 18px;
+  box-sizing: border-box;
+  overflow: hidden;
 }
+
 .description-card__text {
   margin: 0;
   font-size: 14px;
   line-height: 1.6;
   color: rgba(255, 255, 255, 0.65);
+  word-break: break-word;
+  overflow-wrap: break-word;
+  white-space: pre-wrap;
 }
 
 .buy-bar {
-  position: absolute;
+  position: fixed;
   left: 12px;
   right: 12px;
-  bottom: calc(12px + env(safe-area-inset-bottom));
+  bottom: calc(94px + env(safe-area-inset-bottom));
   border-radius: 20px;
   display: flex;
   align-items: center;
@@ -283,21 +313,25 @@ onMounted(async () => {
   padding: 10px 10px 10px 18px;
   z-index: 2;
 }
+
 .buy-bar__price {
   display: flex;
   flex-direction: column;
   line-height: 1.2;
 }
+
 .buy-bar__price-label {
   font-size: 10.5px;
   color: rgba(255, 255, 255, 0.45);
   text-transform: uppercase;
   letter-spacing: 0.05em;
 }
+
 .buy-bar__price-value {
   font-size: 16px;
   font-weight: 700;
 }
+
 .buy-bar__btn {
   flex: 1;
 }
@@ -312,9 +346,11 @@ onMounted(async () => {
   transition: transform 0.15s ease, opacity 0.15s ease;
   font-family: inherit;
 }
+
 .btn:active {
   transform: scale(0.96);
 }
+
 .btn--primary {
   background: #fff;
   color: #050505;

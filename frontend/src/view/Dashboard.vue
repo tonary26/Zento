@@ -110,7 +110,14 @@ onMounted(async () => {
           <h2 class="section__title">Рекомендуем</h2>
           <router-link :to="{ name: 'products.index' }" class="section__more" type="button">Все товары →</router-link>
         </div>
-        <div class="products-row">
+        <p v-if="productStore.loading" class="state-message">
+          Загружаю товары...
+        </p>
+        <p v-else-if="productStore.error" class="state-message state-message--error">
+          {{ productStore.error }}
+        </p>
+
+        <div v-else class="products-row">
           <div v-for="product in productStore.products" :key="product.id" class="glass product-card">
             <router-link :to="{name: 'products.show', params: { id: product.id }}" class="product-card__link">
               <img :src="product.image" class="product-card__thumb glass">
@@ -386,6 +393,23 @@ onMounted(async () => {
   cursor: pointer;
   font-family: inherit;
   text-decoration: none;
+}
+
+.state-message {
+  margin: 0;
+  padding: 14px 16px;
+  border-radius: 16px;
+  background: rgba(255, 255, 255, 0.06);
+  color: rgba(255, 255, 255, 0.72);
+  font-size: 13px;
+  font-weight: 600;
+  line-height: 1.4;
+}
+
+.state-message--error {
+  background: rgba(120, 24, 24, 0.24);
+  color: #ffd6d6;
+  border: 1px solid rgba(255, 95, 95, 0.3);
 }
 
 .quick-grid {
