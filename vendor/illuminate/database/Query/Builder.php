@@ -2989,7 +2989,7 @@ class Builder implements BuilderContract
             },
             strtolower($direction) === 'asc' => 'asc',
             strtolower($direction) === 'desc' => 'desc',
-            default => throw new InvalidArgumentException('Order direction must be a SortDirection, "asc" or "desc".'),
+            default => throw new InvalidArgumentException('Basket direction must be a SortDirection, "asc" or "desc".'),
         };
 
         $this->{$this->unions ? 'unionOrders' : 'orders'}[] = [
