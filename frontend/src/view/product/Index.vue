@@ -65,6 +65,9 @@ onMounted(async () => {
         <p v-else-if="productStore.error" class="state-message state-message--error">
           {{ productStore.error }}
         </p>
+        <p v-else-if="productStore.products.length === 0" class="empty-state">
+          Товаров пока нет
+        </p>
 
         <div v-else class="products-grid">
           <div v-for="product in productStore.products" :key="product.id" class="glass product-card">
@@ -85,7 +88,6 @@ onMounted(async () => {
   position: relative;
   min-height: 100vh;
   min-height: 100dvh;
-  background: #050505;
   color: #f5f5f5;
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
   overflow: hidden;
@@ -266,6 +268,14 @@ onMounted(async () => {
   background: rgba(120, 24, 24, 0.24);
   color: #ffd6d6;
   border: 1px solid rgba(255, 95, 95, 0.3);
+}
+
+.empty-state {
+  margin: 0;
+  padding: 2px 0;
+  color: rgba(255, 255, 255, 0.56);
+  font-size: 13px;
+  line-height: 1.4;
 }
 
 .products-grid {

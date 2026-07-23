@@ -67,6 +67,7 @@ function goBack() {
                 type="text"
                 class="field__input"
                 placeholder="Вставьте ссылку на изображение"
+                @keyup.enter="onEnter"
             />
           </label>
           <label class="field">
@@ -76,6 +77,7 @@ function goBack() {
                 type="text"
                 class="field__input"
                 placeholder="Например, Подарочная карта"
+                @keyup.enter="onEnter"
             />
           </label>
 
@@ -89,6 +91,7 @@ function goBack() {
                 class="field__textarea"
                 rows="4"
                 placeholder="Кратко расскажите о товаре"
+                @keyup.enter="onEnter"
             ></textarea>
           </label>
 
